@@ -1,6 +1,6 @@
 package com.example;
 
-import orth.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MathServiceTest {
@@ -11,10 +11,10 @@ public class MathServiceTest {
         assertEquals(8, result, "5 + 3 should equal 8");
     }
 
-    // @Test
-    // public void testSubtract() {
-    //     MathService service = new MathService();
-    //     int result = service.subtract(5, 3);
-    //     assertEquals(2, result, "5 - 3 should equal 2");
-    // }
+    @Test
+    public void testSubtract() {
+        MathService service = new MathService();
+        int result = service.subtract(5, 3);
+        assertEquals(2, result, "5 - 3 should equal 2");
+    }
 }
