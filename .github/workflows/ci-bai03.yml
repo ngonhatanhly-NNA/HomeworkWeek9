@@ -1,0 +1,36 @@
+name: CI Bai 03 - Build and Artifact
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'Bai03/**' # Chỉ chạy khi có thay đổi trong thư mục Bai03
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'Bai03/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Bài 3 không yêu cầu chạy nhiều hệ điều hành
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17' # Đổi lại thành 17 hoặc phiên bản bạn đang dùng
+        distribution: 'temurin'
+        cache: maven
+
+    # Thêm 'package' để đóng gói ra file .jar
+    - name: Build with Maven (Build, Test, and Package)
+      working-directory: ./Bai03
+      run: mvn clean test package 
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: bai03-app-jar
+        path: Bai03/target/*.jar

@@ -1,0 +1,35 @@
+name: CI Bai 04 - OS Matrix Strategy
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'Bai04/**' # Chỉ chạy khi có thay đổi trong thư mục Bai04
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'Bai04/**'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+      fail-fast: false # Để lỗi ở 1 HĐH không làm hủy chạy các HĐH khác
+      
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17' # Đổi lại thành 17 
+        distribution: 'temurin'
+        cache: maven
+
+    # Bài 4 chỉ cần test để kiểm tra lỗi đường dẫn thư mục
+    - name: Build and Test Bai 04
+      working-directory: ./Bai04
+      run: mvn clean test

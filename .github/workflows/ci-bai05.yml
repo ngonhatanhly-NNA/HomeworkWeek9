@@ -1,0 +1,35 @@
+name: CI Bai 05 - JaCoCo Coverage
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ 'Bai05/**' ]
+  pull_request:
+    branches: [ "main" ]
+    paths: [ 'Bai05/**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    # Chạy Maven phase 'verify' để kích hoạt jacoco:check
+    - name: Build and Verify Coverage
+      working-directory: ./Bai05
+      run: mvn clean verify
+
+    # Trích xuất và lưu trữ báo cáo bao phủ
+    - name: Upload JaCoCo Report
+      if: always() 
+      uses: actions/upload-artifact@v4
+      with:
+        name: jacoco-report
+        path: Bai05/target/site/jacoco/
