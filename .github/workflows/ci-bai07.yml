@@ -27,4 +27,4 @@ jobs:
 
     # Bước này để đảm bảo Pipeline bị FAILED nếu build/test lỗi
     - name: Verify Code & Tests
-      run: mvn -B clean test --file pom.xml
+      run: mvn -B clean test --file Bai07/pom.xml
