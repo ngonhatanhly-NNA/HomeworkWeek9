@@ -1,0 +1,30 @@
+name: Automated PR Review
+
+on:
+  pull_request: # 👉 Trigger khi có sự kiện Pull Request
+    branches: [ "main" ]
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    # Chạy action checkstyle như đề bài yêu cầu để comment trực tiếp
+    - name: Inline Feedback (Checkstyle Bot)
+      uses: dbelyaev/action-checkstyle@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        reporter: github-pr-review
+        level: warning
+        checkstyle_config: checkstyle.xml # Trỏ tới file luật checkstyle của bạn
+
+    # Bước này để đảm bảo Pipeline bị FAILED nếu build/test lỗi
+    - name: Verify Code & Tests
+      run: mvn -B clean test --file pom.xml
