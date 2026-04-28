@@ -1,0 +1,33 @@
+name: CI Bai 08 - Packaging
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ 'Bai08/**' ]
+  pull_request:
+    branches: [ "main" ]
+    paths: [ 'Bai08/**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build and Package JAR
+      working-directory: ./Bai08
+      # Chạy lệnh package như yêu cầu đề bài
+      run: mvn clean package
+
+    - name: Upload Executable JAR Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: bai08-executable-jar
+        path: Bai08/target/*.jar

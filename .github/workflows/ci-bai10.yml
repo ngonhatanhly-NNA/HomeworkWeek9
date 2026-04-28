@@ -1,0 +1,26 @@
+name: CI Bai 10 - The Broken Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ 'Bai10/**' ]
+  pull_request:
+    branches: [ "main" ]
+    paths: [ 'Bai10/**' ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Run Tests to Detect/Verify Fixes
+      working-directory: ./Bai10
+      run: mvn clean test
